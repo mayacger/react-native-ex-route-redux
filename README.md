@@ -1,2 +1,2 @@
-# react-native-NavigationExperimental-redux-example
-react native NavigationExperimental redux example
+# react-native-ex-route-redux
+react native NavigationExperimental redux
