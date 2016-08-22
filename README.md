@@ -15,6 +15,8 @@ redux by https://github.com/alinz/example-react-native-redux/tree/master/Counter
 https://github.com/mayacger/react-native-ex-route-redux-example
 
 
+![demo gif](https://github.com/mayacger/react-native-ex-route-redux/blob/master/demo.gif)
+
 ##Sample Configuration
 ```
 npm install --save https://github.com/mayacger/react-native-ex-route-redux.git
