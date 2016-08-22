@@ -102,7 +102,7 @@ class DrawerController extends Component {
 
     let currentChild = navigationState.routes[navigationState.index];
     let scene = (
-      <Renderer key={navigationState.index} navState={navigationState.containerState[navigationState.selectedContainer]} dispatch={this.props.dispatch} />
+      <Renderer {...this.props} key={navigationState.index} navState={navigationState.containerState[navigationState.selectedContainer]} dispatch={this.props.dispatch} />
     );
 
     let modalScene;
