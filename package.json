@@ -1,0 +1,35 @@
+{
+  "name": "react-native-ex-route-redux",
+  "version": "1.0.0",
+  "description": "react native navigation with NavigationExperimental and redux",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mayacger/react-native-NavigationExperimental-redux.git"
+  },
+  "keywords": [
+    "react",
+    "native",
+    "navigation",
+    "NavigationExperimental",
+    "redux"
+  ],
+  "dependencies": {
+    "react": "15.2.1",
+    "react-native": "^0.31.0",
+    "react-redux": "^4.4.5",
+    "redux": "~3.5.2",
+    "redux-actions": "^0.10.0",
+    "redux-create-reducer": "^1.1.1",
+    "redux-thunk": "~2.1.0"
+  },
+  "author": "mayacger",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mayacger/react-native-NavigationExperimental-redux/issues"
+  },
+  "homepage": "https://github.com/mayacger/react-native-NavigationExperimental-redux#readme"
+}
