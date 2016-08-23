@@ -49,7 +49,6 @@ class Renderer extends Component {
   }
 
   _render (props) {
-    console.log(1,props)
     let backAction = () => {
       this.props.dispatch(navigationHelper().pop())
     }
