@@ -49,15 +49,24 @@ class Renderer extends Component {
   }
 
   _render (props) {
-
+    console.log(1,props)
     let backAction = () => {
       this.props.dispatch(navigationHelper().pop())
     }
-
+    let hasHead = {
+      paddingTop:64
+    }
+    if(props.scene.route.props.hideNavBar) {
+      hasHead.paddingTop = 0;
+    }
+    if(props.scene.route.props.hasHead) {
+      hasHead= props.scene.route.props.hasHead;
+    }
     return (
       <View style={{ flex: 1 }}>
 
         <NavigationCard
+          style={hasHead}
           {...this.props}
           panHandlers={null}
           {...props}
@@ -79,13 +88,5 @@ class Renderer extends Component {
 
 }
 
-// <NavigationHeader
-//   {...props}
-//   onNavigateBack={backAction}
-//   renderTitleComponent={(props) => {
-//     const title = props.scene.route.props.title
-//     return (<NavigationHeader.Title>{title}</NavigationHeader.Title>)
-//   }}
-// />
 
 export default Renderer;

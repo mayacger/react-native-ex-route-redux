@@ -46,11 +46,10 @@ export default function navBar (navigate, dispatch, props, backAction) {
   };
 
   let renderRightButton = () => scene.renderRightButton(scene, navigate, dispatch);
-
   return (
     <NavigationHeader
       { ...props }
-      style={scene.headerStyle}
+      style={[scene.defaultheaderStyle,scene.headerStyle]}
       onNavigateBack={backAction}
       renderTitleComponent={renderTitle}
       renderLeftComponent={(scene.renderLeftButton || scene.renderBackButton) && renderLeftButton}
