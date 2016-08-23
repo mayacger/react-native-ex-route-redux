@@ -8,7 +8,7 @@ uses NavigationExperimental && redux
 
 #thanks
 router by https://github.com/jarredwitt/react-native-router-ex
-    当我发现上文好，发现非常合适我目前的项目，可是因为原作者近期没有更新，而rn 0.31 NavigationExperimental 改变了很多参数，我在原文基础上
+    当我发现这个组件后，发现非常合适我目前的项目，可是因为原作者近期没有更新，而rn 0.31 NavigationExperimental 改变了很多参数，我在原文基础上
     更新到0.31。非常感谢原作者。
     遗留：动画部分还没有完成
 &&
