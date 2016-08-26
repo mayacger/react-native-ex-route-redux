@@ -25,7 +25,7 @@ https://github.com/mayacger/react-native-ex-route-redux-example
 
 ##Sample Configuration
 ```
-npm install --save https://github.com/mayacger/react-native-ex-route-redux.git
+npm install --save react-native-ex-route-redux
 ```
 ### Provider
 ```
