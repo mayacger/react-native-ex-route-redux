@@ -1,6 +1,6 @@
 {
   "name": "react-native-ex-route-redux",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "react native navigation with NavigationExperimental and redux",
   "main": "index.js",
   "scripts": {

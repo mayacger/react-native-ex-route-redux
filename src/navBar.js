@@ -11,16 +11,7 @@ const propTypes = {
 
 export default function navBar (navigate, dispatch, props, backAction) {
   // Fix ghosting issue when popping back.
-  if (props.scene.index !== props.scenes.length - 1) {
-    return (
-      <NavigationHeader
-        { ...props }
-        renderTitleComponent={() => true}
-        renderLeftComponent={() => true}
-        renderRightComponent={() => true}
-      />
-    );
-  }
+
 
   /* eslint react/prop-types: 0 */
   let scene = props.scene.route.props;
@@ -46,6 +37,17 @@ export default function navBar (navigate, dispatch, props, backAction) {
   };
 
   let renderRightButton = () => scene.renderRightButton(scene, navigate, dispatch);
+  if (props.scene.index !== props.scenes.length - 1) {
+    return (
+      <NavigationHeader
+        { ...props }
+        style={[scene.defaultheaderStyle,scene.headerStyle]}
+        renderTitleComponent={renderTitle}
+        renderLeftComponent={() => true}
+        renderRightComponent={() => true}
+      />
+    );
+  }
   return (
     <NavigationHeader
       { ...props }
