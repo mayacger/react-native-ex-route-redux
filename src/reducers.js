@@ -1,5 +1,10 @@
 import { combineReducers } from 'redux'
-import * as NavigationStateUtils from 'NavigationStateUtils'
+import { NavigationExperimental } from 'react-native';
+
+const {
+  StateUtils: NavigationStateUtils,
+} = NavigationExperimental;
+
 
 import { TOGGLE_LEFT_DRAWER, TOGGLE_RIGHT_DRAWER, NAV_MODAL, MODAL_POP, NAV_INIT, NAV_PUSH, NAV_POP, NAV_POP_TO, NAV_POP_TO_KEY, NAV_JUMP_TO_KEY, NAV_JUMP_TO_INDEX, NAV_RESET, NAV_SWITCH } from './actions'
 const initialNavState = {
