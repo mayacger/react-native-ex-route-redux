@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { Animated, Dimensions } from 'react-native';
+import { Animated, Dimensions,View, Text, touchablewithoutfeedback } from 'react-native';
 
 let { width, height } = Dimensions.get('window');
 
-import navigationHelper from './navigationHelper';
 
 class Drawer extends Component {
   static propTypes = {
@@ -51,15 +50,35 @@ class Drawer extends Component {
   render() {
     let top = 0;
     let side = 'left';
+    let alignSide = 'flex-start';
     if (this.isRight) {
       side = 'right';
+      alignSide = 'flex-end';
     }
-
     const MenuComponent = this.props.menuComponent;
+    let { dispatch, navigate} = this.props;
 
+    let closeMenu = () => (
+      <View  style={{flex:1,width:width - 300,height}}
+        onStartShouldSetResponderCapture={(e, gestureState) => {
+          if (side == 'left') {
+              dispatch(navigate.toggleLeftDrawer())
+          }else{
+              dispatch(navigate.toggleRightDrawer())
+          }
+        }}>
+
+      </View>
+    )
     return (
-      <Animated.View style={[{ position: 'absolute', top, [side]: this.state.animatedValue, overflow: 'hidden', height, width: this.props.width, backgroundColor: 'white' }]}>
-        <MenuComponent scenes={this.props.scenes} navigate={navigationHelper()} />
+      <Animated.View
+        key="View"
+        style={[{ position: 'absolute', top, [side]: this.state.animatedValue, overflow: 'hidden', height, width: this.props.width, flexDirection: 'row',backgroundColor: 'rgba(0,0,0,0)'}]}>
+        { side == 'right' && closeMenu() }
+        <View  style={{width:300}}>
+          <MenuComponent  scenes={this.props.scenes} navigate={navigate} />
+        </View>
+        { side == 'left' && closeMenu() }
       </Animated.View>
     );
   }

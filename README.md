@@ -1,7 +1,7 @@
 # react-native-ex-route-redux
 react native NavigationExperimental redux
 
-#react-native 0.31
+#react-native >= 0.32
 
 
 uses NavigationExperimental && redux

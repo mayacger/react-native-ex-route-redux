@@ -1,43 +1,35 @@
-import React, { Component, PropTypes } from 'react';
-import {
-  View,
-  Text,
-} from 'react-native';
+'use strict'
 
-import DrawerController from './drawerController';
-import TabController from './tabController';
+import React, {PropTypes, Component} from 'react'
+import {NavigationExperimental, StyleSheet, View, Text} from 'react-native'
+import CardStack from "./NavigationCardStack"
+import * as  actions from './actions'
 
-class RouterEx extends Component {
-  static propTypes = {
-    initialScene: PropTypes.string,
-    scenes: PropTypes.object,
-    navState: PropTypes.object,
-  };
+import TabController from "./tabController";
 
-  static contextTypes = {
-    store: PropTypes.object,
-  }
-
+class Router extends Component {
   constructor(props) {
     super(props);
 
     this._scenes = this._gatherScenes(props.scenes);
     this._sceneMap = this._createSceneMap(this._scenes);
   }
-  render() {
-
+  render () {
     let scenes = [...this._scenes];
     let rootScene = this._scenes[0];
-    switch (rootScene.type.toUpperCase()) {
-      case 'DRAWER': {
-        return <DrawerController {...this.props} navState={this.props.navState} dispatch={this.context.store.dispatch} initialScene={this.props.initialScene} scenes={scenes.splice(1, scenes.length)} { ...rootScene } />;
-      }
-      default:
-      case 'TABS': {
-        return <TabController {...this.props} navState={this.props.navState} dispatch={this.context.store.dispatch} initialScene={this.props.initialScene} scenes={scenes.splice(1, scenes.length)} { ...rootScene } />;
-      }
-    }
+    // switch (rootScene.type.toUpperCase()) {
+    //   // case 'DRAWER': {
+    //   //   return <DrawerController {...this.props} navState={this.props.navState} dispatch={this.context.store.dispatch} initialScene={this.props.initialScene} scenes={scenes.splice(1, scenes.length)} { ...rootScene } />;
+    //   // }
+    //   default:
+    //   case 'TABS': {
+        return <TabController defaultComponent={this.props.defaultComponent} navState={this.props.navState} dispatch={this.props.dispatch} initialScene={this.props.initialScene} scenes={scenes.splice(1, scenes.length)} navType={rootScene.type} { ...rootScene } />;
+    //   }
+    // }
   }
+
+  //  <CardStack {...this.props}/>
+  //
   _gatherScenes = (scenes) => {
     let stateScenes = [];
 
@@ -71,7 +63,6 @@ class RouterEx extends Component {
 
       return child;
     });
-    // console.log(stateScenes.concat(childScenes))
     return stateScenes.concat(childScenes);
   };
   _createSceneMap = (scenes) => {
@@ -82,10 +73,12 @@ class RouterEx extends Component {
 
     return map;
   }
-  _handleNavigation = (onNavigate) => (action) => {
-    let _action = Object.assign({}, action);
-    onNavigate(_action);
-  }
 }
 
-export default RouterEx;
+
+Router.propTypes = {
+	navigationState: PropTypes.object,
+	// backAction: PropTypes.func.isRequired
+}
+
+export default Router;
