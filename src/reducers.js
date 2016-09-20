@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-// import * as NavigationStateUtils from 'NavigationStateUtils'
 import { NavigationExperimental } from 'react-native';
 
 const {
