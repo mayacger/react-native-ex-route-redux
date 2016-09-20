@@ -9,13 +9,17 @@ uses NavigationExperimental && redux
 #thanks
 router by https://github.com/jarredwitt/react-native-router-ex
     当我发现这个组件后，发现非常合适我目前的项目，可是因为原作者近期没有更新，而rn 0.31 NavigationExperimental 改变了很多参数，我在原文基础上
-    更新到0.31。非常感谢原作者。
+    更新到0.33。非常感谢原作者。
     遗留：动画部分还没有完成
 &&
 
 redux by https://github.com/alinz/example-react-native-redux/tree/master/Counter
 
 整合redux Demo到页面中，可参考学习redux用法。
+
+
+##已知问题
+tab切换时有过场动画，多个场景快速切换。
 
 ##example
 https://github.com/mayacger/react-native-ex-route-redux-example
