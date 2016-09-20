@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+// import * as NavigationStateUtils from 'NavigationStateUtils'
 import { NavigationExperimental } from 'react-native';
 
 const {
@@ -112,18 +113,17 @@ function navigationState(state = initialNavState, action) {
 		containerState[state.selectedContainer].routes = state.routes;
 
 		let toRoutes = containerState[action.index].routes;
-
 		let toIndex = toRoutes.length -1;
-
 		let currentState = {
 			...state,
 			containerState,
 			activeKey:action.key,
 			selectedContainer: action.index,
 			index: toIndex,
-			routes: toRoutes
+			routes: toRoutes,
+			leftDrawerVisible: false,
+			rightDrawerVisible: false,
 		}
-
 
 		return NavigationStateUtils.jumpToIndex(currentState, toIndex)
 

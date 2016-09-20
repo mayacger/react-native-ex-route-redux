@@ -94,7 +94,7 @@ class TabController extends Component {
       },
     });
 
-    
+
   }
   render() {
     if (!this.props.navState.containerState) {

@@ -25,10 +25,11 @@ export function navigateInit(state) {
 	}
 }
 
-export function navigateSwitch(state) {
+export function navigateSwitch(index, key) {
 	return {
 		type: NAV_SWITCH,
-		state,
+		index,
+		key,
 	}
 }
 
