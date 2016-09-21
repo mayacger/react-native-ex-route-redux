@@ -18,9 +18,6 @@ redux by https://github.com/alinz/example-react-native-redux/tree/master/Counter
 整合redux Demo到页面中，可参考学习redux用法。
 
 
-##已知问题
-tab切换时有过场动画，多个场景快速切换。
-
 ##example
 https://github.com/mayacger/react-native-ex-route-redux-example
 
