@@ -32,17 +32,18 @@ function navigationState(state = initialNavState, action) {
 	let setActiveKey = (state, activeKey) => Object.assign({}, state, { activeKey });
 
 	let resetState = (action, state) => {
+    let selectedContainerState = state.containerState[state.selectedContainer];
 		if(action.index){
-			state.routes[action.index] = Object.assign({},state.routes[action.index],action.props);
-			state.index = state.index - action.index;
-			state.routes.length  = state.index + 1;
+			selectedContainerState.routes[action.index] = Object.assign({},selectedContainerState.routes[action.index],action.props);
+			selectedContainerState.index = selectedContainerState.index - action.index;
+			selectedContainerState.routes.length  = selectedContainerState.index + 1;
 		} else if(action.key) {
-			let index = state.routes.findIndex(s => s.key === action.key);
-			state.index = index + 1;
-			state.routes[index] = Object.assign({},state.routes[index],action.props);
-			state.routes.length  = state.index + 1;
+			let index = selectedContainerState.routes.findIndex(s => s.key === action.key);
+			selectedContainerState.index = index + 1;
+			selectedContainerState.routes[index] = Object.assign({},selectedContainerState.routes[index],action.props);
+			selectedContainerState.routes.length  = selectedContainerState.index + 1;
 		}
-		return state;
+		return selectedContainerState;
 	}
 
 
@@ -60,9 +61,6 @@ function navigationState(state = initialNavState, action) {
 		let modalState = NavigationStateUtils.push(state.modalState, { key: action.key, ...props });
 		let navState = Object.assign({}, state, { modalState });
 		return setActiveKey(Object.assign({}, navState, { modal: true }), action.key);
-
-
-    return Object.assign({},state, action.state);
   }
 
 	case MODAL_POP: {
@@ -78,53 +76,106 @@ function navigationState(state = initialNavState, action) {
 		return setActiveKey(navState, activeKey);
 	}
 
-	case NAV_PUSH:
+	case NAV_PUSH:{
 
-		if (state.routes[state.index].key === (action.state && action.state.key)) return state
-		let scene = findScene(action.state.key, action.state);
+    let scene = findScene(action.state.key, action.state);
 
-		return NavigationStateUtils.push(state, scene);
+    let key = action.state.key;
 
-	case NAV_POP:
-		if (state.index === 0 || state.routes.length === 1) return state
-		return NavigationStateUtils.pop(state)
+    if (state.modal) {
+      let exists = state.modalState.routes.filter(c => c.key === key || c.key.includes(`${key}_`));
+      if (exists.length) {
+        key = `${key}_${exists.length}`;
+      }
+      let newModalState = NavigationStateUtils.push(state.modalState, scene);
+      let navState = Object.assign({}, state, { modalState: newModalState });
 
-	case NAV_POP_TO:
-		if (state.index === 0 || state.routes.length === 1) return state
+      return setActiveKey(Object.assign({}, navState), action.state.key);
+    }
 
-		state = resetState(action, state)
-		return NavigationStateUtils.pop(state)
+		let selectedContainerState = state.containerState[state.selectedContainer];
+		if (selectedContainerState.routes[selectedContainerState.index].key === (action.state && action.state.key)) return state;
+		let exists = selectedContainerState.routes.filter(c => c.key === key || c.key.includes(`${key}_`));
+      if (exists.length) {
+        key = `${key}_${exists.length}`;
+      }
+		let newselectedContainerState = NavigationStateUtils.push(selectedContainerState, scene);
+    let newcontainerState = [...state.containerState];
+    newcontainerState[state.selectedContainer] = newselectedContainerState;
+    return setActiveKey(Object.assign({}, state, { containerState: newcontainerState }), action.state.key);
+  }
 
-	case NAV_POP_TO_KEY:
-		if (state.index === 0 || state.routes.length === 1) return state
-		state = resetState(action, state)
-		return NavigationStateUtils.pop(state)
+	case NAV_POP:{
+		let scene;
+		if (action.state && action.state.key) {
+			scene = findScene(action.state.key, action.state);
+		}
+		let selectedContainerState = state.containerState[state.selectedContainer];
 
-	case NAV_JUMP_TO_KEY:
-		return NavigationStateUtils.jumpTo(state, action.key)
+		let newselectedContainerState = NavigationStateUtils.pop(selectedContainerState, scene);
+    let newcontainerState = [...state.containerState];
+    newcontainerState[state.selectedContainer] = newselectedContainerState;
+    let activeKey = newselectedContainerState.routes[newselectedContainerState.index].key;
+    return setActiveKey(Object.assign({}, state, { containerState: newcontainerState }), activeKey);
 
-	case NAV_JUMP_TO_INDEX:
-		return NavigationStateUtils.jumpToIndex(state, action.index)
+	}
 
-	case NAV_SWITCH:
+	case NAV_POP_TO: {
+    let scene;
+		if (action.state && action.state.key) {
+			scene = findScene(action.state.key, action.state);
+		}
+    let selectedContainerState = resetState(action, state);
+    let newselectedContainerState = NavigationStateUtils.pop(selectedContainerState, scene);
+    let newcontainerState = [...state.containerState];
+    newcontainerState[state.selectedContainer] = newselectedContainerState;
+    let activeKey = newselectedContainerState.routes[newselectedContainerState.index].key;
+    return setActiveKey(Object.assign({}, state, { containerState: newcontainerState }), activeKey);
+  }
 
-		let containerState = state.containerState;
-		containerState[state.selectedContainer].routes = state.routes;
-
-		let toRoutes = containerState[action.index].routes;
-		let toIndex = toRoutes.length -1;
-		let currentState = {
-			...state,
-			containerState,
-			activeKey:action.key,
-			selectedContainer: action.index,
-			index: toIndex,
-			routes: toRoutes,
-			leftDrawerVisible: false,
-			rightDrawerVisible: false,
+	case NAV_POP_TO_KEY: {
+    let scene;
+		if (action.state && action.state.key) {
+			scene = findScene(action.state.key, action.state);
 		}
 
-		return NavigationStateUtils.jumpToIndex(currentState, toIndex)
+    let selectedContainerState = resetState(action, state);
+    let newselectedContainerState = NavigationStateUtils.pop(selectedContainerState, scene);
+    let newcontainerState = [...state.containerState];
+    newcontainerState[state.selectedContainer] = newselectedContainerState;
+    let activeKey = newselectedContainerState.routes[newselectedContainerState.index].key;
+    return setActiveKey(Object.assign({}, state, { containerState: newcontainerState }), activeKey);
+  }
+
+	case NAV_JUMP_TO_KEY:{
+    const childIndex = state.routes.findIndex(c => c.key === action.key);
+    let currentState = Object.assign({}, state, {
+      selectedContainer: childIndex,
+      leftDrawerVisible: false,
+      rightDrawerVisible: false,
+    });
+    return setActiveKey(NavigationStateUtils.jumpToIndex(currentState, childIndex), action.key);
+  }
+
+	case NAV_JUMP_TO_INDEX:{
+    let currentState = Object.assign({}, state, {
+      selectedContainer: action.index,
+      leftDrawerVisible: false,
+      rightDrawerVisible: false,
+    });
+    return setActiveKey(NavigationStateUtils.jumpToIndex(currentState, childIndex), action.key);
+  }
+
+	case NAV_SWITCH: {
+    const childIndex = state.routes.findIndex(c => c.key === action.key);
+    let currentState = Object.assign({}, state, {
+      selectedContainer: childIndex,
+      leftDrawerVisible: false,
+      rightDrawerVisible: false,
+    });
+    return setActiveKey(NavigationStateUtils.jumpToIndex(currentState, childIndex), action.key);
+  }
+
 
 	case NAV_RESET:
 

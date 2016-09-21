@@ -63,11 +63,8 @@ class TabController extends Component {
       type: NAV_INIT,
       state: {
         activeKey: initialScene,
-        routes:[
-          // ...this.props.navState.routes[0],
-          Object.assign({},this.props.navState.routes[0],this._tabs[0])
-        ],
-        // index,
+        routes,
+        index,
         key: 'tabController',
         modal: initialSceneIsModal,
         modalState: {
@@ -131,11 +128,20 @@ class TabController extends Component {
     }
     let  tabRoutes= navigationState.containerState[navigationState.selectedContainer].routes;
     let  currentTabRoute = tabRoutes[tabRoutes.length - 1];
-
-
+    // <NavCard {...this.props} navigationState={this.props.navState}/>
     return (
-      <View style={{ flex: 1 }}>
-        <NavCard {...this.props} navigationState={this.props.navState}/>
+        <View style={{ flex: 1 }}>
+        {this._tabs.map((tab, index) => {
+          let style = { flex: 1 };
+          if (index !== navigationState.selectedContainer) {
+            style = { height: 0, overflow: 'hidden' };
+          }
+          return (
+            <View key={index} style={style}>
+              <NavCard {...this.props} navigationState={this.props.navState.containerState[index]}/>
+          </View>
+          );
+        })}
         <Tabs tabBarStyle={currentTabRoute.tabBarStyle} onSelectTab={_tabSelect}>
           {this._tabs.map((tab, index) => {
             let tabRenderer = tab.icon || this._renderDefaultTab;
