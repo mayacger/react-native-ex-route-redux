@@ -122,7 +122,7 @@ class TabController extends Component {
       currentChild = navigationState.modalState.routes[0];
       scene = (
         <View style={{ flex: 1 }}>
-            <NavCard {...this.props} navigationState={navigationState.modalState} dispatch={this.props.dispatch} />
+            <NavCard  navigationState={navigationState.modalState} dispatch={this.props.dispatch} />
         </View>
       );
     }
@@ -137,7 +137,7 @@ class TabController extends Component {
           }
           return (
             <View key={index} style={style}>
-              <NavCard {...this.props} navigationState={this.props.navState.containerState[index]}/>
+              <NavCard dispatch={this.props.dispatch} navigationState={this.props.navState.containerState[index]}/>
           </View>
           );
         })}

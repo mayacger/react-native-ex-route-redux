@@ -6,10 +6,10 @@ import {NavigationExperimental, StyleSheet, View, Text} from 'react-native'
 import * as  actions from './actions'
 
 const {
-	CardStack: NavigationCardStack,
-	Transitioner: NavigationTransitioner,
-	Card: NavigationCard,
-	Header: NavigationHeader
+  CardStack: NavigationCardStack,
+  Transitioner: NavigationTransitioner,
+  Card: NavigationCard,
+  Header: NavigationHeader
 } = NavigationExperimental
 
 // Known bug in v0.30: https://github.com/facebook/react-native/issues/7422#issuecomment-236280199
@@ -21,51 +21,56 @@ class Card extends Component {
   constructor (props) {
     super(props);
   }
-	render() {
 
-		let { navigationState, backAction } = this.props;
-		if (!backAction){
-			backAction = () => {
+  shouldComponentUpdate(nextProps) {
+    return (nextProps.navigationState.key && nextProps.navigationState.index) !== (this.props.navigationState.key && this.props.navigationState.index);
+  }
+
+  render() {
+
+    let { navigationState, backAction } = this.props;
+    if (!backAction){
+      backAction = () => {
       this.props.dispatch(actions.pop())
-			}
+      }
     }
-		return (
+    return (
 
-			<NavigationTransitioner
-				navigationState={navigationState}
-				style={styles.container}
-				render={props => (
-					<View style={{flex:1}}>
-						<NavigationCard
-							{...props}
-							style={props.scene.route.key === 'Modal' ?
-										NavigationCard.CardStackStyleInterpolator.forVertical(props) :
-										undefined
-							}
-							onNavigateBack={backAction}
-							panHandlers={props.scene.route.key === 'Modal' ? null : undefined }
-							renderScene={this.__renderScene}
-							key={props.scene.route.key}
-						/>
-						{this._renderHeader(props)}
-					</View>
-				)}
-			/>
-
-
-
-		)
-	}
+      <NavigationTransitioner
+        navigationState={navigationState}
+        style={styles.container}
+        render={props => (
+          <View style={{flex:1}}>
+            <NavigationCard
+              {...props}
+              style={props.scene.route.key === 'Modal' ?
+                    NavigationCard.CardStackStyleInterpolator.forVertical(props) :
+                    undefined
+              }
+              onNavigateBack={backAction}
+              panHandlers={props.scene.route.key === 'Modal' ? null : undefined }
+              renderScene={this.__renderScene}
+              key={props.scene.route.key}
+            />
+            {this._renderHeader(props)}
+          </View>
+        )}
+      />
 
 
 
-	_renderHeader = (props) => {
+    )
+  }
+
+
+
+  _renderHeader = (props) => {
 
     let { backAction, navigate, dispatch} = this.props
-		if (!backAction){
-			backAction = () => {
-	      this.props.dispatch(actions.pop())
-			}
+    if (!backAction){
+      backAction = () => {
+        this.props.dispatch(actions.pop())
+      }
     }
     let scene = props.scene.route;
 
@@ -81,47 +86,47 @@ class Card extends Component {
       return <NavigationHeader.Title textStyle={scene.titleStyle}>{title}</NavigationHeader.Title>
     }
 
-		let renderLeftButton = (navProps) => {
-	    if (navProps.scene.index !== 0) {
-	      return scene.renderBackButton && scene.renderBackButton(scene, actions, dispatch);
-	    }
+    let renderLeftButton = (navProps) => {
+      if (navProps.scene.index !== 0) {
+        return scene.renderBackButton && scene.renderBackButton(scene, actions, dispatch);
+      }
 
-	    return scene.renderLeftButton && scene.renderLeftButton(scene, actions, dispatch);
-	  };
+      return scene.renderLeftButton && scene.renderLeftButton(scene, actions, dispatch);
+    };
 
-	  let renderRightButton = () => scene.renderRightButton(scene, actions, dispatch);
+    let renderRightButton = () => scene.renderRightButton(scene, actions, dispatch);
 
-		if (props.scene.index !== props.scenes.length - 1) {
-	    return (
-	      <NavigationHeader
-	        { ...props }
-	        style={[scene.defaultheaderStyle,scene.headerStyle]}
-	        renderTitleComponent={renderTitle}
-	        renderLeftComponent={() => true}
-	        renderRightComponent={() => true}
-	      />
-	    );
-	  }
+    if (props.scene.index !== props.scenes.length - 1) {
+      return (
+        <NavigationHeader
+          { ...props }
+          style={[scene.defaultheaderStyle,scene.headerStyle]}
+          renderTitleComponent={renderTitle}
+          renderLeftComponent={() => true}
+          renderRightComponent={() => true}
+        />
+      );
+    }
 
     return (
       <NavigationHeader
         {...props}
-				style={[scene.defaultheaderStyle, scene.headerStyle]}
+        style={[scene.defaultheaderStyle, scene.headerStyle]}
         onNavigateBack={backAction}
         renderTitleComponent={renderTitle}
-				renderLeftComponent={(scene.renderLeftButton || scene.renderBackButton) && renderLeftButton}
-	      renderRightComponent={scene.renderRightButton && renderRightButton}
+        renderLeftComponent={(scene.renderLeftButton || scene.renderBackButton) && renderLeftButton}
+        renderRightComponent={scene.renderRightButton && renderRightButton}
       />
     )
   };
 
-	__renderScene = ({scene}) => {
+  __renderScene = ({scene}) => {
     const { route } = scene
     if (route.component) {
       let { component, ...otherProps } = route;
       let SceneComponent = component;
       return (
-        <SceneComponent {...this.props} {...otherProps} navigate={actions}/>
+        <SceneComponent {...otherProps} dispatch={this.props.dispatch} navigate={actions}/>
       );
     }else {
       // let { component, ...otherProps } = this.props.defaultComponent;
@@ -134,14 +139,14 @@ class Card extends Component {
 }
 
 Card.propTypes = {
-	navigationState: PropTypes.object,
-	// backAction: PropTypes.func.isRequired
+  navigationState: PropTypes.object,
+  // backAction: PropTypes.func.isRequired
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	}
+  container: {
+    flex: 1
+  }
 })
 
 export default Card;
