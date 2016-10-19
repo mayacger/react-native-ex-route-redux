@@ -4,7 +4,6 @@ import Tabs from './tabBar/tabBar';
 
 import { NAV_INIT, NAV_SWITCH, TOGGLE_LEFT_DRAWER, TOGGLE_RIGHT_DRAWER } from './actions';
 import * as  actions from './actions'
-// import Renderer from './renderer';
 import Modal from './modal';
 import CardStack from "./NavigationCardStack";
 import Card from "./NavigationCard";
@@ -41,9 +40,10 @@ class TabController extends Component {
     let routes = this._tabs;
     let initialScene = props.initialScene || this._tabs[0].key;
     let initialSceneIsModal = false;
-
+    let modalStateRoutes = [];
     if (props.initialScene) {
       let scene = props.scenes.find(s => s.key === props.initialScene);
+      modalStateRoutes.push(scene);
       if (scene.type.toUpperCase() === 'TAB') {
         selectedContainer = this._tabs.findIndex(t => t.key === scene.key);
       } else if (scene.type.toUpperCase() === 'SCENE') {
@@ -53,7 +53,7 @@ class TabController extends Component {
           key,
           ...otherProps,
         });
-    
+
         index = routes.length - 1;
         initialSceneIsModal = true;
       }
@@ -68,7 +68,7 @@ class TabController extends Component {
         key: 'tabController',
         modal: initialSceneIsModal,
         modalState: {
-          routes: [],
+          routes: modalStateRoutes,
           index: 0,
           key: 'modal',
         },
@@ -128,7 +128,6 @@ class TabController extends Component {
     }
     let  tabRoutes= navigationState.containerState[navigationState.selectedContainer].routes;
     let  currentTabRoute = tabRoutes[tabRoutes.length - 1];
-    // <NavCard {...this.props} navigationState={this.props.navState}/>
     return (
         <View style={{ flex: 1 }}>
         {this._tabs.map((tab, index) => {
@@ -155,32 +154,6 @@ class TabController extends Component {
         </Modal>
       </View>
     )
-    //<CardStack {...this.props}/>
-    // return (
-    //   <View style={{ flex: 1 }}>
-    //     {this._tabs.map((tab, index) => {
-    //       let style = { flex: 1 };
-    //       if (index !== navigationState.selectedContainer) {
-    //         style = { height: 0, overflow: 'hidden' };
-    //       }
-    //       return (
-    //         <View key={index} style={style}>
-    //
-    //           <Renderer {...this.props}  navState={navigationState.containerState[index]} dispatch={this.props.dispatch} />
-    //       </View>
-    //       );
-    //     })}
-    //     <Tabs tabBarStyle={currentTabRoute.props.tabBarStyle} onSelectTab={_tabSelect}>
-    //       {this._tabs.map((tab, index) => {
-    //         let tabRenderer = tab.props.icon || this._renderDefaultTab;
-    //         return tabRenderer(tab.props, index, tab.key, navigationState.selectedContainer);
-    //       })}
-    //     </Tabs>
-    //     <Modal show={navigationState.modal} navState={navigationState.modalState} direction={currentChild.props.direction} scene={currentChild}>
-    //       {scene}
-    //     </Modal>
-    //   </View>
-    // );
   };
   _renderDefaultTab = (tab, index, key, selectedIndex) => {
     let color = selectedIndex === index ? 'red' : 'black';
