@@ -42,22 +42,22 @@ class TabController extends Component {
     let initialScene = props.initialScene || this._tabs[0].key;
     let initialSceneIsModal = false;
 
-    // if (props.initialScene) {
-    //   let scene = props.scenes.find(s => s.key === props.initialScene);
-    //   if (scene.type.toUpperCase() === 'TAB') {
-    //     selectedContainer = this._tabs.findIndex(t => t.key === scene.key);
-    //   } else if (scene.type.toUpperCase() === 'SCENE') {
-    //     let { key, schema, ...otherProps } = scene; // eslint-disable-line no-unused-vars
-    //     routes = [...routes];
-    //     routes.push({
-    //       key,
-    //       props: { ...otherProps },
-    //     });
-    //
-    //     index = routes.length - 1;
-    //     initialSceneIsModal = true;
-    //   }
-    // }
+    if (props.initialScene) {
+      let scene = props.scenes.find(s => s.key === props.initialScene);
+      if (scene.type.toUpperCase() === 'TAB') {
+        selectedContainer = this._tabs.findIndex(t => t.key === scene.key);
+      } else if (scene.type.toUpperCase() === 'SCENE') {
+        let { key, schema, ...otherProps } = scene; // eslint-disable-line no-unused-vars
+        routes = [...routes];
+        routes.push({
+          key,
+          ...otherProps,
+        });
+    
+        index = routes.length - 1;
+        initialSceneIsModal = true;
+      }
+    }
 
     props.dispatch({
       type: NAV_INIT,
