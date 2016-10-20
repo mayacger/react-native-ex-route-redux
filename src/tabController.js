@@ -25,7 +25,10 @@ class TabController extends Component {
 
   constructor(props) {
     super(props);
+    this._init(props);
+  }
 
+  _init (props) {
     this._tabs = props.scenes.filter(s => s.type === 'TAB').map(t => {
       let { key, ...otherProps } = t;
       return {
@@ -65,6 +68,7 @@ class TabController extends Component {
         activeKey: initialScene,
         routes,
         index,
+        isUpgrade: false,
         key: 'tabController',
         modal: initialSceneIsModal,
         modalState: {
@@ -78,7 +82,6 @@ class TabController extends Component {
         rightDrawerVisible: false,
         containerState: this._tabs.map(t => {
           let { key, ...otherProps } = t;
-
           return {
             index: 0,
             routes: [{
@@ -90,17 +93,21 @@ class TabController extends Component {
         }),
       },
     });
-
-
   }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.navState.isUpgrade) {
+      this._init(nextProps);
+    }
+  }
+
   render() {
     if (!this.props.navState.containerState) {
       return <View />;
     }
     return this._renderNavigation(this.props.navState);
   }
-  _renderNavigation = (navigationState) => {
 
+  _renderNavigation = (navigationState) => {
     if (!navigationState) { return null; }
     let _tabSelect = (index, key) => {
       if (navigationState.activeKey === key) {

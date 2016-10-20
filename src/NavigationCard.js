@@ -22,9 +22,9 @@ class Card extends Component {
     super(props);
   }
 
-  shouldComponentUpdate(nextProps) {
-    return (nextProps.navigationState.key && nextProps.navigationState.index) !== (this.props.navigationState.key && this.props.navigationState.index);
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   return (nextProps.navigationState.key && nextProps.navigationState.index) !== (this.props.navigationState.key && this.props.navigationState.index);
+  // }
 
   render() {
 

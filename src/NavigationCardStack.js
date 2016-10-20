@@ -20,9 +20,9 @@ class CardStack extends Component {
   constructor (props) {
     super(props);
   }
-  shouldComponentUpdate(nextProps) {
-    return (nextProps.navigationState.key && nextProps.navigationState.index) !== (this.props.navigationState.key && this.props.navigationState.index);
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   return (nextProps.navigationState.key && nextProps.navigationState.index) !== (this.props.navigationState.key && this.props.navigationState.index);
+  // }
   render() {
 
     let { navigationState, backAction } = this.props;

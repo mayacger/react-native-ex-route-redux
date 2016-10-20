@@ -1,6 +1,7 @@
 // *** Action Types ***
 export const NAVIGATE = 'NAVIGATE'
 export const NAV_INIT = 'NAV_INIT'
+export const NAV_UPGRADE = 'NAV_UPGRADE'
 export const NAV_PUSH = 'NAV_PUSH'
 export const NAV_POP = 'NAV_POP'
 export const NAV_JUMP_TO_KEY = 'NAV_JUMP_TO_KEY'
@@ -124,5 +125,10 @@ export function navigateReset(routes, index) {
 		type: NAV_RESET,
 		index,
 		routes
+	}
+}
+export function navigateUpgrade() {
+	return {
+		type: NAV_UPGRADE,
 	}
 }

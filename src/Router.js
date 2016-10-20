@@ -14,22 +14,18 @@ class Router extends Component {
     this._scenes = this._gatherScenes(props.scenes);
     this._sceneMap = this._createSceneMap(this._scenes);
   }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.navState.isUpgrade) {
+      this._scenes = this._gatherScenes(nextProps.scenes);
+    }
+  }
+
   render () {
     let scenes = [...this._scenes];
     let rootScene = this._scenes[0];
-    // switch (rootScene.type.toUpperCase()) {
-    //   // case 'DRAWER': {
-    //   //   return <DrawerController {...this.props} navState={this.props.navState} dispatch={this.context.store.dispatch} initialScene={this.props.initialScene} scenes={scenes.splice(1, scenes.length)} { ...rootScene } />;
-    //   // }
-    //   default:
-    //   case 'TABS': {
-        return <TabController defaultComponent={this.props.defaultComponent} navState={this.props.navState} dispatch={this.props.dispatch} initialScene={this.props.initialScene} scenes={scenes.splice(1, scenes.length)} navType={rootScene.type} { ...rootScene } />;
-    //   }
-    // }
+    return <TabController defaultComponent={this.props.defaultComponent} navState={this.props.navState} dispatch={this.props.dispatch} initialScene={this.props.initialScene} scenes={scenes.splice(1, scenes.length)} navType={rootScene.type} { ...rootScene } />;
   }
 
-  //  <CardStack {...this.props}/>
-  //
   _gatherScenes = (scenes) => {
     let stateScenes = [];
 
